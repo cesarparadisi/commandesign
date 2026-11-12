@@ -1,0 +1,12 @@
+---
+/**
+ * Wordmark «commandesign». El trazado vive en /brand/wordmark.svg y se reutiliza con <use>,
+ * así el HTML no repite 33 KB de vectores en cada página. Toma el color del texto.
+ * Proporción 125,3 × 18,4.
+ */
+interface Props { class?: string; label?: string }
+const { class: cls = '', label = 'commandesign' } = Astro.props;
+---
+<svg viewBox="0 0 125.3 18.4" class={cls} role="img" aria-label={label}>
+  <use href="/brand/wordmark.svg#wm" />
+</svg>

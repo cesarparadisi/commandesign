@@ -1,0 +1,88 @@
+---
+/**
+ * Lámina 01 · Portada.
+ * Arriba: caja de texto chica con la acción principal (amarilla) y la brújula: el isotipo-engranaje
+ * gira con el scroll. Abajo: el claim a lo ancho de la lámina en Bold; la segunda frase en gris.
+ * Cierre: banda de datos (hora de Buenos Aires, estado y rumbo de la brújula).
+ * Si «estado» está vacío en el panel, la celda se oculta.
+ */
+import Isotipo from '../ui/Isotipo.astro';
+import WhatsAppButton from '../ui/WhatsAppButton.astro';
+import { site, whatsappUrl, type Lang } from '../../lib/site';
+import { getTextos, ancla } from '../../lib/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = getTextos(lang);
+const h = t.hero;
+const frases = [
+  { palabras: h.titulo.trim().split(/\s+/), cls: '' },
+  { palabras: h.subtitulo.trim().split(/\s+/), cls: 'text-humo' },
+];
+let n = 0;
+const datos = [
+  { id: 'hora', k: h.horaLabel },
+  ...(h.estado.trim() ? [{ id: 'estado', k: h.estadoLabel }] : []),
+  { id: 'rumbo', k: h.giroLabel },
+];
+const ancho = datos.length === 3 ? 'md:col-span-4' : 'md:col-span-6';
+const borde = [
+  '',
+  'border-l border-filete pl-4 md:pl-6',
+  'border-t border-filete md:border-t-0 md:border-l md:pl-6',
+  'border-t border-l border-filete pl-4 md:border-t-0 md:pl-6',
+];
+---
+<section id="inicio" class="relative flex min-h-[calc(100svh-4rem-1px)] flex-col" aria-labelledby="hero-title" data-sheet="inicio">
+  <!-- Retícula de 12 columnas, apenas visible -->
+  <div class="pointer-events-none absolute inset-0 -z-10 hidden md:block" aria-hidden="true">
+    <div class="shell grid-cmd h-full">
+      {Array.from({ length: 12 }, (_, i) => <span class:list={['border-l border-blanco/[0.035]', i === 11 && 'border-r']}></span>)}
+    </div>
+  </div>
+
+  <div class="shell flex flex-1 flex-col pt-5 md:pt-6">
+    <div class="micro entra flex items-baseline justify-between gap-6 text-cemento" style="--d:100ms">
+      <p class="flex items-baseline gap-5"><span class="lectura text-blanco">01</span><span>{h.etiqueta}</span></p>
+      <p class="hidden sm:block">{site.ciudad[lang]}</p>
+    </div>
+    <div class="traza mt-4 h-px bg-filete" style="--d:150ms" aria-hidden="true"></div>
+
+    <div class="grid-cmd flex-1 content-between gap-y-10 pt-10 md:gap-y-14 md:pt-12">
+      <div class="order-1 col-span-2 md:order-none md:col-span-3 md:col-start-10 md:row-start-1">
+        <Isotipo class="w-full max-w-[9rem] sm:max-w-[12rem] md:ml-auto md:max-w-[min(17rem,32svh)]" />
+      </div>
+
+      <h1 id="hero-title" class="t-load titular order-2 col-span-4 text-mega md:order-none md:col-span-12 md:row-start-2" aria-label={`${h.titulo} ${h.subtitulo}`}>
+        {frases.map((f, fi) => (
+          <span class:list={['block', f.cls]}>
+            {f.palabras.map((p, i) => (
+              <Fragment><span class="t-mask" aria-hidden="true"><span class="t-word" style={`--i:${n++};--d:${fi ? 420 : 250}ms`}>{p}</span></span>{i < f.palabras.length - 1 ? ' ' : ''}</Fragment>
+            ))}
+          </span>
+        ))}
+      </h1>
+
+      <div class="order-3 col-span-4 self-end md:order-none md:col-span-4 md:row-start-1">
+        <p class="entra max-w-[36ch] text-small text-niebla" style="--d:700ms">{h.bajada}</p>
+        <div class="entra mt-8 flex flex-wrap items-center gap-x-7 gap-y-4" style="--d:820ms">
+          <WhatsAppButton lang={lang} href={ancla(lang, 'contacto')} label={h.cta} />
+          <a href={whatsappUrl(lang)} target="_blank" rel="noopener" class="enlace text-sm text-niebla transition-colors hover:text-blanco">{h.ctaSecundario}</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Datos de contexto -->
+    <dl class="entra grid-cmd mt-12 border-t border-filete md:mt-14" style="--d:1000ms">
+      {datos.map((d, i) => (
+        <div class:list={['col-span-2 py-4 md:py-5', ancho, borde[i]]}>
+          <dt class="micro text-cemento">{d.k}</dt>
+          <dd class="mt-1.5 text-[0.9375rem] text-blanco">
+            {d.id === 'hora' && <span class="lectura"><time data-clock data-tz={site.zonaHoraria}>--:--:--</time><span class="ml-2 text-cemento" data-utc>UTC−3</span></span>}
+            {d.id === 'estado' && <span class="flex items-center gap-2.5"><span class="estado" aria-hidden="true"></span>{h.estado}</span>}
+            {d.id === 'rumbo' && <span class="lectura" data-gear-out>000.0°</span>}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

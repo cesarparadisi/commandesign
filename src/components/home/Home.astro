@@ -1,0 +1,20 @@
+---
+/**
+ * Página única, cinco láminas: 01 portada · 02 manifiesto · 03 servicios · 04 mapa · 05 contacto.
+ * El pie (cajetín) lo pone el layout. Los casos de estudio vuelven cuando estén listos
+ * (src/lib/casos.ts › MOSTRAR_TRABAJOS; van entre servicios y el mapa).
+ */
+import Hero from './Hero.astro';
+import Manifiesto from './Manifiesto.astro';
+import Services from './Services.astro';
+import Mapa from './Mapa.astro';
+import ContactForm from './ContactForm.astro';
+import type { Lang } from '../../lib/site';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<Hero lang={lang} />
+<Manifiesto lang={lang} />
+<Services lang={lang} />
+<Mapa lang={lang} />
+<ContactForm lang={lang} />

@@ -1,0 +1,113 @@
+---
+/**
+ * Lámina 04 · Mapa. El mismo mapa del manual: retícula de 2,5° (Natural Earth) donde cada celda de tierra
+ * pasa del píxel al punto de oeste a este. Los países con proyectos se encienden en blanco y llevan su punto
+ * amarillo; el primero de la lista es la sede y lleva anillo.
+ * Al hacer clic en un país (en su punto o en sus celdas) se abre su ficha: nombre y proyectos hechos allí.
+ * Los proyectos salen de los casos publicados con el campo «país»; mientras no haya, la ficha lo dice.
+ * Todo se alimenta de estudio.json › paises y de los casos: sumar un país o un proyecto no requiere código.
+ */
+import SectionHead from '../ui/SectionHead.astro';
+import mapa from '../../lib/mapa-mundo.json';
+import { paisesConProyectos, normalizar, type Lang } from '../../lib/site';
+import { getTextos, rutaCaso } from '../../lib/i18n';
+import { getCasos, esPublicado, slugDe, MOSTRAR_TRABAJOS } from '../../lib/casos';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = getTextos(lang);
+const m = t.mapa;
+const paises = paisesConProyectos();
+const porSimbolo = new Map(paises.map((p) => [p.sym, p.iso]));
+const { cols, rows, lon0, latTop, d } = mapa;
+
+// Proyectos publicados por país (vacío mientras los casos estén ocultos)
+const casos = MOSTRAR_TRABAJOS ? (await getCasos(lang)).filter(esPublicado) : [];
+const proyectosDe = (p: (typeof paises)[number]) => {
+  const claves = [p.es, p.en, p.iso].map(normalizar);
+  return casos.filter((c) => claves.includes(normalizar(c.data.pais)));
+};
+
+// Celdas agrupadas por columna (la columna define la forma: píxel → punto)
+const columnas = Array.from({ length: cols }, (_, c) => {
+  const k = c / (cols - 1);
+  const s = 0.9 - 0.08 * k;
+  const o = (1 - s) / 2;
+  const celdas: { y: number; iso?: string }[] = [];
+  mapa.celdas.forEach((fila, r) => {
+    const ch = fila[c];
+    if (ch && ch !== '.') celdas.push({ y: +(r + o).toFixed(3), iso: porSimbolo.get(ch) });
+  });
+  return { c, x: +(c + o).toFixed(3), s: +s.toFixed(3), rx: +((k * s) / 2).toFixed(3), celdas };
+});
+
+const pos = (lon: number, lat: number) => ({
+  x: ((lon - lon0) / (cols * d)) * 100,
+  y: ((latTop - lat) / (rows * d)) * 100,
+});
+const lista = paises.map((p) => p[lang]).join(', ');
+// En el teléfono el mapa se amplía y se centra en los países con proyectos
+const cx = paises.length ? (paises.reduce((a, p) => a + p.lon, 0) / paises.length - lon0) / (cols * d) : 0.5;
+// Foco: el país elegido queda en blanco, el resto se atenúa
+const focoCss = paises.map((p) => `.mapa[data-foco="${p.iso}"] use.p-${p.iso}{fill:var(--color-blanco)}.mapa[data-foco="${p.iso}"] .marca[data-pais="${p.iso}"]{opacity:1}`).join('');
+---
+<section id="mapa" class="scroll-mt-16 pt-32 md:pt-48" aria-labelledby="mapa-title" data-sheet="mapa">
+  <SectionHead num="04" eyebrow={m.etiqueta} nota={m.nota} title={m.titulo} id="mapa-title" size="headline" />
+  <div class="shell">
+    <div class="grid-cmd mt-8 md:mt-10">
+      <p class="col-span-4 max-w-[40ch] text-small text-niebla md:col-span-4 md:col-start-9" data-reveal>{m.texto}</p>
+    </div>
+
+    <figure class="mapa mapa-marco relative mt-12 md:mt-16" data-mapa data-reveal="mapa">
+      <figcaption class="sr-only">{m.titulo} {lista}.</figcaption>
+      <div class="mapa-zoom relative" style={`--cx:${cx.toFixed(3)}`}>
+        <svg viewBox={`0 0 ${cols} ${rows}`} class="block h-auto w-full" aria-hidden="true">
+          <defs>
+            {columnas.map((k) => <rect id={`k${k.c}`} x={k.x} width={k.s} height={k.s} rx={k.rx} />)}
+          </defs>
+          <line x1="0" x2={cols} y1={latTop / d} y2={latTop / d} class="mapa-ecuador" vector-effect="non-scaling-stroke" />
+          {columnas.map((k) => k.celdas.length > 0 && (
+            <g class="mc" style={`--c:${k.c}`}>
+              {k.celdas.map((cel) => <use href={`#k${k.c}`} y={cel.y} class={cel.iso ? `p p-${cel.iso}` : undefined} data-pais={cel.iso} />)}
+            </g>
+          ))}
+        </svg>
+
+        {paises.map((p, i) => {
+          const q = pos(p.lon, p.lat);
+          return (
+            <button type="button" class="marca absolute" style={`left:${q.x.toFixed(3)}%;top:${q.y.toFixed(3)}%;--i:${i}`}
+              data-pais={p.iso} aria-label={p[lang]} aria-expanded="false" aria-controls={`pais-${p.iso}`}>
+              {i === 0 && <span class="marca-anillo"></span>}
+              <span class="marca-punto"></span>
+            </button>
+          );
+        })}
+      </div>
+      {paises.map((p, i) => {
+        const q = pos(p.lon, p.lat);
+        const proyectos = proyectosDe(p);
+        return (
+          <div id={`pais-${p.iso}`} class:list={['ficha-pais absolute', q.x > 62 && 'ficha-izq', q.y > 62 && 'ficha-arriba']}
+            style={`left:${q.x.toFixed(3)}%;top:${q.y.toFixed(3)}%`} data-ficha-pais={p.iso} hidden>
+            <p class="micro text-cemento">{i === 0 ? m.sede : p.iso}</p>
+            <p class="titular mt-1.5 text-title text-blanco">{p[lang]}</p>
+            {proyectos.length > 0 ? (
+              <ul class="mt-3 border-t border-filete">
+                {proyectos.map((c) => (
+                  <li class="border-b border-filete">
+                    <a href={rutaCaso(lang, slugDe(c))} class="flex items-baseline justify-between gap-4 py-2 text-sm text-niebla transition-colors hover:text-blanco">
+                      <span>{c.data.title}</span><span aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="mt-2 text-sm text-cemento">{m.pronto}</p>
+            )}
+          </div>
+        );
+      })}
+    </figure>
+  </div>
+  <style is:inline set:html={focoCss}></style>
+</section>

@@ -1,0 +1,70 @@
+---
+/**
+ * Lámina base. Sin router del lado del cliente: es un sitio de una página y el movimiento
+ * vive en scripts/motion.ts. El marco fijo de 1 px es el borde de la lámina.
+ */
+import '../styles/global.css';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { site, whatsappVisible, paisesConProyectos, type Lang } from '../lib/site';
+import { getTextos, rutaAlterna, otro } from '../lib/i18n';
+interface Props { lang: Lang; title?: string; description?: string; slug?: string; image?: string; noindex?: boolean }
+const { lang, slug } = Astro.props;
+const t = getTextos(lang);
+const title = Astro.props.title ?? t.meta.titulo;
+const description = Astro.props.description ?? t.meta.descripcion;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const alternate = new URL(rutaAlterna(lang, slug), site.url).href;
+const og = new URL(Astro.props.image ?? '/og.jpg', site.url).href;
+// Datos estructurados para Google: se arman solos desde estudio.json
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.nombre,
+  url: site.url,
+  image: og,
+  logo: new URL('/apple-touch-icon.png', site.url).href,
+  description,
+  email: site.correo,
+  telephone: whatsappVisible().replace(/[\s-]/g, ''),
+  address: { '@type': 'PostalAddress', addressLocality: 'Buenos Aires', addressCountry: 'AR' },
+  areaServed: paisesConProyectos().map((p) => ({ '@type': 'Country', name: p.en })),
+  sameAs: [site.instagram, site.x, site.linkedin].filter(Boolean),
+  knowsLanguage: ['es', 'en'],
+};
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={lang} href={canonical} />
+    <link rel="alternate" hreflang={otro(lang)} href={alternate} />
+    <link rel="alternate" hreflang="x-default" href={lang === 'es' ? canonical : alternate} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#0A0A0A" />
+    {Astro.props.noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="commandesign" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_LA' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {!Astro.props.noindex && <script type="application/ld+json" set:html={JSON.stringify(ld)} />}
+  </head>
+  <body>
+    <!-- Marco de la lámina -->
+    <div class="pointer-events-none fixed inset-1.5 z-50 border border-filete md:inset-2.5" aria-hidden="true"></div>
+    <Header lang={lang} slug={slug} />
+    <main id="contenido"><slot /></main>
+    <Footer lang={lang} slug={slug} />
+    <script>import '../scripts/motion';</script>
+  </body>
+</html>

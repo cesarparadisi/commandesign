@@ -1,0 +1,27 @@
+---
+/**
+ * Signo de commandesign, versión oficial «del píxel al punto».
+ * 152 celdas de la retícula 15 × 15. Regla: en la columna i, k = i / 14;
+ * lado = 0,9 − 0,08·k del módulo; radio = k·lado / 2. A la izquierda píxel, a la derecha punto.
+ * Siempre acromático: toma el color del texto (negro o blanco).
+ * motion.ts lo anima (data-mode): «hero» entra columna por columna, responde al cursor y ondula
+ * con el scroll; «mini» solo ondula con la velocidad del scroll. Al quedar quieto vuelve a la forma oficial.
+ */
+import celdas from '../../lib/signo-celdas.json';
+interface Props { class?: string; label?: string; mode?: 'hero' | 'mini' | 'static'; size?: number | string }
+const { class: cls = '', label, mode = 'mini', size } = Astro.props;
+const geo = (x: number, y: number) => {
+  const k = x / 14;
+  const s = 0.9 - 0.08 * k;
+  const o = (1 - s) / 2;
+  return { x: +(x + o).toFixed(3), y: +(y + o).toFixed(3), s: +s.toFixed(3), r: +((k * s) / 2).toFixed(3) };
+};
+---
+<svg viewBox="0 0 15 15" class:list={['pixel-sign', cls]} width={size} height={size} fill="currentColor"
+  role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : 'true'}
+  data-pixel-sign={mode === 'static' ? undefined : mode}>
+  {(celdas as [number, number][]).map(([x, y]) => {
+    const g = geo(x, y);
+    return <rect data-i={x} data-j={y} x={g.x} y={g.y} width={g.s} height={g.s} rx={g.r} />;
+  })}
+</svg>

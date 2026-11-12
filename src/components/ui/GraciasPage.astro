@@ -1,0 +1,30 @@
+---
+/** Confirmación para envíos sin JavaScript (Netlify redirige aquí tras recibir el formulario). */
+import Base from '../../layouts/Base.astro';
+import SplitTitle from './SplitTitle.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+import { getTextos, rutas } from '../../lib/i18n';
+import type { Lang } from '../../lib/site';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = getTextos(lang);
+const e = t.formulario.exito;
+---
+<Base lang={lang} title={`${e.titulo} · commandesign`} noindex>
+  <section class="shell flex min-h-[calc(100svh-4rem)] flex-col justify-between gap-16 pt-6 pb-16" data-sheet="inicio">
+    <div>
+      <div class="micro entra flex items-center gap-3 text-cemento"><span class="estado" aria-hidden="true"></span>{t.formulario.ficha.listo}</div>
+      <div class="traza mt-4 h-px bg-filete" aria-hidden="true"></div>
+    </div>
+    <div class="grid-cmd gap-y-10">
+      <SplitTitle as="h1" mode="load" text={e.titulo} class="titular col-span-4 text-mega md:col-span-8" />
+      <div class="col-span-4 md:col-span-4 md:self-end">
+        <p class="entra max-w-[40ch] text-small text-niebla" style="--d:500ms">{e.texto}</p>
+        <div class="entra mt-8 flex flex-wrap items-center gap-x-7 gap-y-4" style="--d:600ms">
+          <WhatsAppButton lang={lang} label={e.whatsapp} />
+          <a href={rutas[lang].inicio} class="enlace text-sm text-niebla transition-colors hover:text-blanco">{t.error404.volver}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

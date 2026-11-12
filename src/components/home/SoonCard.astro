@@ -1,0 +1,53 @@
+---
+/** Caso en preparación: lámina técnica tipográfica, sin imagen ni página. Se edita en su .md o desde el panel. */
+import Cross from '../ui/Cross.astro';
+import type { Caso } from '../../lib/casos';
+import { getTextos, pad } from '../../lib/i18n';
+import type { Lang } from '../../lib/site';
+interface Props { lang: Lang; caso: Caso; index: number; total: number }
+const { lang, caso, index, total } = Astro.props;
+const t = getTextos(lang);
+const d = caso.data;
+const cells = 15;
+const ref = `CMD—${pad(index)}`;
+---
+<div class="block" aria-label={`${d.title} · ${t.trabajos.proximo}`}>
+  <div class="tech mb-3 flex items-center gap-3 text-cemento" aria-hidden="true">
+    <span class="h-2.5 w-px bg-acero"></span>
+    <span class="text-blanco">{t.plano.figura} {pad(index)}</span>
+    <span class="h-px flex-1 bg-acero/60"></span>
+    <span>{ref}</span>
+    <span class="h-2.5 w-px bg-acero"></span>
+  </div>
+  <div class="case-frame">
+    <Cross class="-top-[4.5px] -left-[4.5px] z-10" /><Cross class="-top-[4.5px] -right-[4.5px] z-10" />
+    <Cross class="-bottom-[4.5px] -left-[4.5px] z-10" /><Cross class="-bottom-[4.5px] -right-[4.5px] z-10" />
+    <div class="relative aspect-[4/3] overflow-hidden bg-carbon/60 text-cemento outline outline-1 outline-linea" data-reveal="media">
+      <span class="absolute inset-0 opacity-60" style="background-image:linear-gradient(to right,rgb(244 244 242/.06) 1px,transparent 1px),linear-gradient(to bottom,rgb(244 244 242/.06) 1px,transparent 1px);background-size:calc(100%/24) calc(100%/18)" aria-hidden="true"></span>
+      <!-- Diagonales de hoja vacía -->
+      <svg class="absolute inset-0 h-full w-full text-linea" viewBox="0 0 100 75" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 0 100 75M100 0 0 75" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" fill="none" />
+      </svg>
+      <span class="tech absolute top-4 left-4">{ref} · {pad(index)}/{pad(total)}</span>
+      <span class="tech absolute top-4 right-4 flex items-center gap-2 text-blanco">
+        <span class="soon-blink size-1.5 bg-senal" aria-hidden="true"></span>{t.trabajos.proximo}
+      </span>
+      <div class="absolute inset-x-[12%] top-1/2 flex -translate-y-1/2 justify-between bg-carbon py-4" aria-hidden="true">
+        {Array.from({ length: cells }, (_, i) => <span class="soon-cell block size-[clamp(6px,1.1vw,14px)] bg-acero" style={`--i:${i}`} />)}
+      </div>
+      <div class="tech absolute inset-x-4 bottom-4 flex items-center gap-3" aria-hidden="true">
+        <span class="h-2.5 w-px bg-current"></span><span class="h-px flex-1 bg-current opacity-50"></span>
+        <span>{t.trabajos.enPreparacion}</span>
+        <span class="h-px flex-1 bg-current opacity-50"></span><span class="h-2.5 w-px bg-current"></span>
+      </div>
+    </div>
+  </div>
+  <div class="mt-5 grid grid-cols-[3.5rem_1fr_auto] items-start gap-x-4" data-reveal style="--d:160ms">
+    <span class="num text-title text-linea">{pad(index)}</span>
+    <div>
+      <h3 class="display-tight text-title text-cemento">{d.title}</h3>
+      {d.focus && <p class="mt-2 text-acero">{d.focus}</p>}
+    </div>
+    <span class="tech mt-2 text-acero">{t.trabajos.pronto}</span>
+  </div>
+</div>

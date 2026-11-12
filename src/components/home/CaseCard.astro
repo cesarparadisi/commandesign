@@ -1,0 +1,69 @@
+---
+/**
+ * Caso publicado. Marco de 1 px con cruces de registro y cota superior.
+ * Al pasar el cursor: la imagen pasa a grafito, sube una retícula fina, aparece una mira
+ * con coordenadas en vivo y entra la hoja de datos fila por fila.
+ */
+import { Image } from 'astro:assets';
+import Cross from '../ui/Cross.astro';
+import { slugDe, type Caso } from '../../lib/casos';
+import { getTextos, rutaCaso, pad } from '../../lib/i18n';
+import type { Lang } from '../../lib/site';
+interface Props { lang: Lang; caso: Caso; index: number; total: number }
+const { lang, caso, index, total } = Astro.props;
+const t = getTextos(lang);
+const d = caso.data;
+const slug = slugDe(caso);
+const ref = `CMD—${pad(index)}`;
+const filas = [
+  d.client && [t.caso.cliente, d.client],
+  d.place && [t.caso.lugar, d.place],
+  d.scope.length > 0 && [t.caso.alcance, d.scope.slice(0, 3).join(' · ')],
+  d.year && [t.caso.anio, String(d.year)],
+  [t.plano.formato, '4:3 · 1600 × 1200'],
+].filter(Boolean) as [string, string][];
+---
+<a href={rutaCaso(lang, slug)} class="case-card group block" data-astro-prefetch="viewport">
+  <!-- Cota superior -->
+  <div class="tech mb-3 flex items-center gap-3 text-cemento" aria-hidden="true">
+    <span class="h-2.5 w-px bg-acero"></span>
+    <span class="text-blanco">{t.plano.figura} {pad(index)}</span>
+    <span class="h-px flex-1 bg-acero/60"></span>
+    <span>{ref}</span>
+    <span class="h-2.5 w-px bg-acero"></span>
+  </div>
+
+  <div class="case-frame">
+    <Cross class="-top-[4.5px] -left-[4.5px] z-10" /><Cross class="-top-[4.5px] -right-[4.5px] z-10" />
+    <Cross class="-bottom-[4.5px] -left-[4.5px] z-10" /><Cross class="-bottom-[4.5px] -right-[4.5px] z-10" />
+    <div class="case-media" data-case-media data-reveal="media">
+      <div transition:name={`portada-${slug}`} style="view-transition-class: portada">
+        <Image src={d.cover!} alt={d.coverAlt || d.title} widths={[640, 960, 1280, 1600]}
+          sizes="(min-width: 768px) 60vw, 100vw" loading={index === 1 ? 'eager' : 'lazy'}
+          class="case-img aspect-[4/3] w-full object-cover" />
+      </div>
+      <span class="layer-grid" aria-hidden="true"></span>
+      <div class="layer-tags tech text-blanco" aria-hidden="true">
+        <span class="absolute top-4 left-4">{ref} · {pad(index)}/{pad(total)}</span>
+        <span class="absolute top-4 right-4 flex items-center gap-2">{t.acciones.verCaso}
+          <svg viewBox="0 0 16 16" class="size-3" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12 12 4M5 4h7v7"/></svg>
+        </span>
+      </div>
+      <div class="layer-sheet tech text-blanco" aria-hidden="true">
+        {filas.map(([k, v]) => <div><span class="text-cemento">{k}</span><span>{v}</span></div>)}
+      </div>
+      <div class="layer-cross" aria-hidden="true">
+        <span class="cross-tag tech"><span data-cross-x>X 0.500</span><span data-cross-y>Y 0.500</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5 grid grid-cols-[3.5rem_1fr_auto] items-start gap-x-4" data-reveal style="--d:160ms">
+    <span class="case-index num text-title text-acero">{pad(index)}</span>
+    <div>
+      <h3 class="display-tight text-title">{d.title}</h3>
+      {d.focus && <p class="mt-2 text-cemento">{d.focus}</p>}
+    </div>
+    <svg viewBox="0 0 16 16" class="case-arrow mt-1 size-5 text-cemento group-hover:text-blanco" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 12 12 4M5 4h7v7"/></svg>
+  </div>
+</a>

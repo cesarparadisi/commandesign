@@ -1,0 +1,45 @@
+---
+/**
+ * Isotipo-engranaje. El signo oficial del píxel al punto (152 celdas, retícula 15 × 15:
+ * en la columna i, k = i/14 · lado 0,9 − 0,08k · radio k·lado/2) montado en un dial de 120 dientes.
+ * Con el scroll, el signo gira como un engranaje y el dial contragira a la mitad de velocidad
+ * (motion.ts › engranaje). La marca de referencia de arriba queda fija. Siempre acromático.
+ */
+import celdas from '../../lib/signo-celdas.json';
+interface Props { class?: string; label?: string }
+const { class: cls = '', label = 'commandesign' } = Astro.props;
+const geo = (x: number, y: number) => {
+  const k = x / 14;
+  const s = 0.9 - 0.08 * k;
+  const o = (1 - s) / 2;
+  return { x: +(x + o).toFixed(3), y: +(y + o).toFixed(3), s: +s.toFixed(3), r: +((k * s) / 2).toFixed(3) };
+};
+const dientes = Array.from({ length: 120 }, (_, i) => {
+  const a = (i * 3 * Math.PI) / 180;
+  const mayor = i % 10 === 0;
+  const r1 = mayor ? 87 : 91;
+  const r2 = 96;
+  const p = (r: number) => [+(100 + r * Math.sin(a)).toFixed(2), +(100 - r * Math.cos(a)).toFixed(2)];
+  const [x1, y1] = p(r1);
+  const [x2, y2] = p(r2);
+  return { x1, y1, x2, y2, mayor };
+});
+---
+<div class:list={['relative aspect-square', cls]} data-gear role="img" aria-label={label}>
+  <svg viewBox="0 0 200 200" class="absolute inset-0 size-full overflow-visible" aria-hidden="true">
+    <g class="gear-ring" data-gear-ring>
+      {dientes.map((d) => (
+        <line x1={d.x1} y1={d.y1} x2={d.x2} y2={d.y2} stroke={d.mayor ? '#8C8C8C' : '#3A3A3A'} stroke-width="1" vector-effect="non-scaling-stroke" />
+      ))}
+    </g>
+    <circle cx="100" cy="100" r="82" fill="none" stroke="#1F1F1F" stroke-width="1" vector-effect="non-scaling-stroke" />
+    <!-- marca de referencia fija -->
+    <line x1="100" y1="-6" x2="100" y2="10" stroke="#F4F4F2" stroke-width="1" vector-effect="non-scaling-stroke" />
+  </svg>
+  <svg viewBox="0 0 15 15" class="gear-rot gear-sign is-intro absolute inset-[26%] size-[48%] text-blanco" fill="currentColor" data-gear-rot aria-hidden="true">
+    {(celdas as [number, number][]).map(([x, y]) => {
+      const g = geo(x, y);
+      return <rect x={g.x} y={g.y} width={g.s} height={g.s} rx={g.r} style={`--c:${x}`} />;
+    })}
+  </svg>
+</div>

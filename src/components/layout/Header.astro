@@ -1,0 +1,63 @@
+---
+/**
+ * Cabecera discreta. Logo acromático, tres micro-rótulos y el idioma.
+ * La sección que estás leyendo se marca con un punto amarillo; el filete inferior se carga
+ * en amarillo a medida que avanzas (línea activa de 1 px).
+ */
+import PixelSign from '../ui/PixelSign.astro';
+import Wordmark from '../brand/Wordmark.astro';
+import { getTextos, rutas, rutaAlterna, ancla, otro, pad } from '../../lib/i18n';
+import type { Lang } from '../../lib/site';
+interface Props { lang: Lang; slug?: string }
+const { lang, slug } = Astro.props;
+const t = getTextos(lang);
+const links = [
+  { id: 'manifiesto', label: t.nav.manifiesto },
+  { id: 'servicios', label: t.nav.servicios },
+  { id: 'mapa', label: t.nav.mapa },
+  { id: 'contacto', label: t.nav.contacto },
+];
+---
+<a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[70] focus:bg-senal focus:px-4 focus:py-2 focus:text-negro">{t.nav.saltar}</a>
+<header class="sticky top-0 z-40 bg-negro">
+  <div class="shell grid h-16 grid-cols-[1fr_auto] items-center gap-x-6 md:grid-cols-12">
+    <a href={rutas[lang].inicio} class="flex items-center gap-3 text-blanco transition-opacity hover:opacity-70 md:col-span-3" aria-label="commandesign">
+      <PixelSign mode="static" class="size-5" />
+      <Wordmark class="hidden h-[11px] w-auto sm:block" label="commandesign" />
+    </a>
+
+    <nav aria-label={t.nav.menu} class="hidden md:col-span-6 md:block">
+      <ul class="micro flex items-center justify-center gap-10">
+        {links.map((l) => (
+          <li><a href={ancla(lang, l.id)} class="nav-link" data-nav={l.id}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center justify-end gap-7 md:col-span-3">
+      <p class="micro flex items-center gap-2.5 text-acero">
+        <span class="text-blanco">{lang.toUpperCase()}</span>
+        <span aria-hidden="true">/</span>
+        <a href={rutaAlterna(lang, slug)} hreflang={otro(lang)} lang={otro(lang)} class="enlace-in text-cemento transition-colors hover:text-blanco" aria-label={t.idioma.cambiar}>{t.idioma.corto}</a>
+      </p>
+      <details class="group md:hidden" data-menu>
+        <summary class="micro flex h-10 cursor-pointer list-none items-center gap-2.5 text-blanco [&::-webkit-details-marker]:hidden">
+          <span class="size-[5px] bg-blanco transition-[border-radius] duration-500 group-open:rounded-full" aria-hidden="true"></span>{t.nav.menu}
+        </summary>
+        <nav class="absolute inset-x-0 top-full h-[calc(100dvh-4rem)] border-t border-filete bg-negro" aria-label={t.nav.menu}>
+          <ul class="shell pt-2">
+            {links.map((l, i) => (
+              <li class="border-b border-filete">
+                <a href={ancla(lang, l.id)} class="flex items-baseline justify-between py-6">
+                  <span class="titular text-[2.75rem] leading-none tracking-[-0.04em]">{l.label}</span>
+                  <span class="micro lectura text-cemento">{pad(i + 2)}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </div>
+  <div class="relative h-px bg-filete" aria-hidden="true"><span class="progreso absolute inset-0 bg-senal" data-progress></span></div>
+</header>

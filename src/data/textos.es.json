@@ -1,0 +1,229 @@
+{
+  "meta": {
+    "titulo": "commandesign · Dirección creativa y ejecución",
+    "descripcion": "Estudio de dirección creativa y ejecución con sede en Buenos Aires. Diseñamos sistemas de identidad y los llevamos al espacio físico —vitrinas, letreros y señalética— y ofrecemos asesoramiento personalizado. Un solo responsable, del concepto a la instalación."
+  },
+  "nav": {
+    "inicio": "Inicio",
+    "manifiesto": "Manifiesto",
+    "servicios": "Servicios",
+    "mapa": "Mapa",
+    "contacto": "Contacto",
+    "menu": "Menú",
+    "saltar": "Saltar al contenido"
+  },
+  "acciones": {
+    "whatsapp": "Escríbenos por WhatsApp",
+    "whatsappCorto": "WhatsApp",
+    "llamar": "Llamar",
+    "correo": "O por correo",
+    "verCaso": "Ver caso"
+  },
+  "hero": {
+    "etiqueta": "Estudio de diseño",
+    "titulo": "Dirección creativa y ejecución.",
+    "subtitulo": "De la pantalla a la calle.",
+    "bajada": "Diseñamos identidades y las llevamos al espacio físico: vitrinas, letreros y señalética. Un solo responsable, del concepto a la instalación.",
+    "cta": "Iniciar un proyecto",
+    "ctaSecundario": "o escríbenos por WhatsApp",
+    "horaLabel": "Hora en Buenos Aires",
+    "estadoLabel": "Estado",
+    "estado": "Agenda abierta",
+    "giroLabel": "Rumbo"
+  },
+  "manifiesto": {
+    "etiqueta": "Manifiesto",
+    "nota": "Oficio y precisión",
+    "titulo": "Diseñado para construirse.",
+    "texto": "Una marca no termina en la pantalla: termina en una fachada, en una vitrina, en un letrero que se lee a veinte metros. Por eso la diseñamos con las medidas reales del lugar, supervisamos cada etapa de su producción y la instalamos nosotros, bajo un solo mando. Lo que apruebas en pantalla es exactamente lo que ves en la calle.",
+    "etapas": [
+      {
+        "titulo": "Pantalla",
+        "texto": "Diseñamos la identidad y cada pieza a partir de las medidas, los materiales y el entorno donde va a funcionar."
+      },
+      {
+        "titulo": "Taller",
+        "texto": "Preparamos los archivos para producción, validamos las pruebas de color y controlamos la fabricación antes del corte."
+      },
+      {
+        "titulo": "Calle",
+        "texto": "Instalamos y entregamos la obra terminada, con registro fotográfico y recomendaciones de mantenimiento."
+      }
+    ],
+    "causa": "Hacemos la ciudad más linda, un negocio a la vez."
+  },
+  "servicios": {
+    "etiqueta": "Servicios",
+    "nota": "Un solo responsable, de la idea a la instalación",
+    "titulo": "Qué hacemos por tu marca.",
+    "columnas": {
+      "codigo": "Cód.",
+      "disciplina": "Disciplina",
+      "alcance": "Alcance",
+      "incluye": "Incluye"
+    },
+    "lista": [
+      {
+        "nombre": "Dirección creativa",
+        "detalle": "Para lanzamientos, aperturas y reposicionamientos. Definimos el concepto y velamos por que cada pieza hable con la misma voz.",
+        "items": [
+          "Concepto visual",
+          "Dirección de arte",
+          "Lanzamientos y aperturas",
+          "Supervisión de producción"
+        ]
+      },
+      {
+        "nombre": "Identidad",
+        "detalle": "Sistemas de identidad reconocibles y fáciles de aplicar, igual de sólidos en pantalla, en impresión y en fachada.",
+        "items": [
+          "Logotipo y símbolo",
+          "Tipografía y color",
+          "Manual de marca",
+          "Papelería y sitio web"
+        ]
+      },
+      {
+        "nombre": "Ejecución física y espacial",
+        "detalle": "Vitrinas, letreros y señalética fieles al diseño aprobado. Tomamos medidas en el lugar, coordinamos la producción e instalamos.",
+        "items": [
+          "Vitrinas y vinilos",
+          "Letreros de fachada",
+          "Señalética interior",
+          "Producción e instalación"
+        ]
+      },
+      {
+        "nombre": "Asesoramiento personalizado",
+        "detalle": "Acompañamiento para decidir antes de invertir. Evaluamos tu marca, tu espacio y tu comunicación, y definimos un plan de acción con prioridades claras.",
+        "items": [
+          "Diagnóstico de marca y espacio",
+          "Plan de acción por prioridades",
+          "Orientación sobre proveedores y producción",
+          "Sesiones en línea o presenciales"
+        ]
+      }
+    ]
+  },
+  "mapa": {
+    "etiqueta": "Mapa",
+    "nota": "Cada trabajo es un punto",
+    "titulo": "Hasta dónde llegamos.",
+    "texto": "Trabajamos en remoto con marcas de cualquier país y nos trasladamos para instalar cuando el proyecto lo requiere.",
+    "sede": "Sede",
+    "proyectos": "Ver proyectos",
+    "pronto": "Casos de estudio en preparación."
+  },
+  "contacto": {
+    "etiqueta": "Contacto",
+    "nota": "Primera respuesta en 24 h hábiles",
+    "titulo": "Cuéntanos qué hay que construir.",
+    "texto": "Completa el formulario o escríbenos por el canal que prefieras. Cuanto más detalle compartas, más precisa será nuestra primera respuesta.",
+    "canalesTitulo": "Canales directos",
+    "redesNota": "En todas las redes como {usuario}",
+    "horarioLabel": "Horario de atención",
+    "horario": "Lunes a viernes, de 9:00 a 18:00 (GMT−3)",
+    "pasosTitulo": "Próximos pasos",
+    "pasos": [
+      "Respondemos con preguntas puntuales o una primera definición de alcance.",
+      "Coordinamos una llamada o una visita técnica para conocer el espacio y tomar medidas.",
+      "Enviamos una propuesta formal con alcance, cronograma y honorarios."
+    ]
+  },
+  "formulario": {
+    "etiqueta": "Formulario",
+    "necesidadesLabel": "¿En qué podemos ayudarte?",
+    "necesidadesAyuda": "Puedes elegir más de una opción.",
+    "necesidades": [
+      "Identidad de marca",
+      "Gráfica comercial / espacial",
+      "Dirección creativa integral",
+      "Asesoramiento personalizado",
+      "Otro"
+    ],
+    "datosLabel": "Datos de contacto",
+    "nombre": "Nombre y apellido",
+    "empresa": "Marca o empresa",
+    "correo": "Correo electrónico",
+    "telefono": "WhatsApp o teléfono",
+    "opcional": "Opcional",
+    "plazoLabel": "¿Cuál es el plazo?",
+    "plazos": [
+      "Lo antes posible",
+      "Entre 1 y 3 meses",
+      "Sin fecha definida"
+    ],
+    "mensajeLabel": "Detalles del proyecto",
+    "mensajePlaceholder": "Qué necesitas, dónde se ubica, medidas aproximadas y cualquier referencia útil.",
+    "enviar": "Enviar consulta",
+    "enviando": "Enviando…",
+    "privacidad": "Tus datos se usan únicamente para responder a esta consulta.",
+    "errores": {
+      "necesidades": "Selecciona al menos una opción.",
+      "nombre": "Indica tu nombre.",
+      "correo": "Revisa el correo electrónico: falta o no es válido.",
+      "envio": "No pudimos enviar la consulta. Inténtalo de nuevo o escríbenos por WhatsApp."
+    },
+    "exito": {
+      "titulo": "Recibido.",
+      "texto": "Responderemos en un plazo de 24 horas hábiles al correo que indicaste.",
+      "whatsapp": "Continuar por WhatsApp",
+      "otra": "Enviar otra consulta"
+    },
+    "ficha": {
+      "titulo": "Ficha de la consulta",
+      "servicios": "Servicios",
+      "marca": "Marca",
+      "contacto": "Contacto",
+      "plazo": "Plazo",
+      "vacio": "Sin completar",
+      "incompleto": "Faltan datos",
+      "listo": "Lista para enviar"
+    }
+  },
+  "footer": {
+    "derechos": "Todos los derechos reservados.",
+    "claim": "Diseñado para construirse.",
+    "volver": "Volver arriba"
+  },
+  "idioma": {
+    "cambiar": "English",
+    "corto": "EN"
+  },
+  "error404": {
+    "titulo": "Esta página no existe.",
+    "volver": "Volver al inicio"
+  },
+  "plano": {
+    "figura": "Fig.",
+    "hoja": "Hoja",
+    "escala": "Esc.",
+    "referencia": "Ref.",
+    "coordenadas": "34°36′13″S 58°22′54″O",
+    "signo": "Signo · retícula 15 × 15",
+    "celdas": "15 celdas · del píxel al punto",
+    "proyecto": "Proyecto",
+    "fecha": "Fecha",
+    "revision": "Rev.",
+    "formato": "Formato",
+    "estudio": "Estudio de dirección creativa y ejecución",
+    "canal": "Canal",
+    "respuesta": "Respuesta",
+    "respuestaValor": "24 h hábiles"
+  },
+  "trabajos": {
+    "etiqueta": "Trabajos",
+    "titulo": "Casos seleccionados",
+    "proximo": "Próximo lanzamiento",
+    "enPreparacion": "En preparación",
+    "pronto": "Pronto"
+  },
+  "caso": {
+    "volver": "Todos los trabajos",
+    "cliente": "Cliente",
+    "lugar": "Lugar",
+    "alcance": "Alcance",
+    "anio": "Año",
+    "siguiente": "Siguiente caso"
+  }
+}

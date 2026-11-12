@@ -1,0 +1,23 @@
+{
+  "nombre": "commandesign",
+  "url": "https://commandesign.com",
+  "correo": "hello@commandesign.com",
+  "whatsapp": "5491125148727",
+  "mensajeWhatsApp": {
+    "es": "Hola, commandesign. Me gustaría consultar por ",
+    "en": "Hi commandesign, I'd like to ask about "
+  },
+  "instagram": "https://instagram.com/commandesign",
+  "x": "https://x.com/commandesign",
+  "linkedin": "https://www.linkedin.com/company/commandesign",
+  "ciudad": {
+    "es": "Buenos Aires · sin fronteras",
+    "en": "Buenos Aires · worldwide"
+  },
+  "zonaHoraria": "America/Argentina/Buenos_Aires",
+  "paises": [
+    "Argentina",
+    "Venezuela",
+    "Estados Unidos"
+  ]
+}

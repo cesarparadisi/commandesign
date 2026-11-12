@@ -1,0 +1,8 @@
+---
+/** Cruz de registro (+) de 9 px. Se posiciona con clases (top/left…) desde el componente padre. */
+interface Props { class?: string; style?: string }
+const { class: cls = '', style } = Astro.props;
+---
+<svg viewBox="0 0 9 9" class:list={['x-mark', cls]} style={style} aria-hidden="true">
+  <path d="M4.5 0v9M0 4.5h9" fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" />
+</svg>

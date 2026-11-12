@@ -1,0 +1,27 @@
+---
+import CaseCard from './CaseCard.astro';
+import SoonCard from './SoonCard.astro';
+import SectionHead from '../ui/SectionHead.astro';
+import { esPublicado, type Caso } from '../../lib/casos';
+import { getTextos } from '../../lib/i18n';
+import type { Lang } from '../../lib/site';
+interface Props { lang: Lang; casos: Caso[] }
+const { lang, casos } = Astro.props;
+const t = getTextos(lang);
+// Composición asimétrica sobre 12 columnas; se repite cada 3 casos
+const layout = ['md:col-span-7', 'md:col-span-5 md:mt-48', 'md:col-span-8 md:col-start-5'];
+---
+<section id="trabajos" class="scroll-mt-16 pt-20 pb-24 md:pt-28 md:pb-40" aria-labelledby="trabajos-title" data-hud={`01 — ${t.trabajos.etiqueta}`}>
+  <SectionHead eyebrow={t.trabajos.etiqueta} title={t.trabajos.titulo} id="trabajos-title" />
+  <div class="shell">
+    <ul class="casos grid-cmd mt-16 gap-y-20 md:mt-24 md:gap-y-28">
+      {casos.map((caso, i) => (
+        <li class:list={['col-span-4', layout[i % layout.length]]}>
+          {esPublicado(caso)
+            ? <CaseCard lang={lang} caso={caso} index={i + 1} total={casos.length} />
+            : <SoonCard lang={lang} caso={caso} index={i + 1} total={casos.length} />}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

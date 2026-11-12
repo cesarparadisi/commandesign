@@ -1,0 +1,229 @@
+{
+  "meta": {
+    "titulo": "commandesign · Creative direction and execution",
+    "descripcion": "Creative direction and execution studio based in Buenos Aires. We design identity systems and bring them into physical space — storefronts, signage and wayfinding — and offer tailored advisory. One accountable lead, from concept to installation."
+  },
+  "nav": {
+    "inicio": "Home",
+    "manifiesto": "Manifesto",
+    "servicios": "Services",
+    "mapa": "Map",
+    "contacto": "Contact",
+    "menu": "Menu",
+    "saltar": "Skip to content"
+  },
+  "acciones": {
+    "whatsapp": "Message us on WhatsApp",
+    "whatsappCorto": "WhatsApp",
+    "llamar": "Call",
+    "correo": "Or by email",
+    "verCaso": "View case"
+  },
+  "hero": {
+    "etiqueta": "Design studio",
+    "titulo": "Creative direction and execution.",
+    "subtitulo": "From screen to street.",
+    "bajada": "We design identities and bring them into physical space: storefronts, signage and wayfinding. One accountable lead, from concept to installation.",
+    "cta": "Start a project",
+    "ctaSecundario": "or message us on WhatsApp",
+    "horaLabel": "Buenos Aires time",
+    "estadoLabel": "Status",
+    "estado": "Taking new projects",
+    "giroLabel": "Heading"
+  },
+  "manifiesto": {
+    "etiqueta": "Manifesto",
+    "nota": "Craft and precision",
+    "titulo": "Designed to be built.",
+    "texto": "A brand doesn’t end on a screen. It ends on a facade, a storefront, a sign read from twenty metres away. That’s why we design to the real dimensions of the site, oversee every stage of production and install it ourselves, under one command. What you approve on screen is exactly what you see on the street.",
+    "etapas": [
+      {
+        "titulo": "Screen",
+        "texto": "We design the identity and every piece around the dimensions, materials and setting it will live in."
+      },
+      {
+        "titulo": "Workshop",
+        "texto": "We prepare production-ready files, sign off colour proofs and control fabrication before anything is cut."
+      },
+      {
+        "titulo": "Street",
+        "texto": "We install and hand over the finished work, with a photographic record and maintenance guidance."
+      }
+    ],
+    "causa": "Making the city more beautiful, one business at a time."
+  },
+  "servicios": {
+    "etiqueta": "Services",
+    "nota": "One accountable lead, from idea to installation",
+    "titulo": "What we do for your brand.",
+    "columnas": {
+      "codigo": "No.",
+      "disciplina": "Discipline",
+      "alcance": "Scope",
+      "incluye": "Includes"
+    },
+    "lista": [
+      {
+        "nombre": "Creative direction",
+        "detalle": "For launches, openings and repositioning. We define the concept and make sure every piece speaks with one voice.",
+        "items": [
+          "Visual concept",
+          "Art direction",
+          "Launches and openings",
+          "Production supervision"
+        ]
+      },
+      {
+        "nombre": "Identity",
+        "detalle": "Recognisable identity systems that are easy to apply, equally solid on screen, in print and on the facade.",
+        "items": [
+          "Logotype and symbol",
+          "Typography and colour",
+          "Brand guidelines",
+          "Stationery and website"
+        ]
+      },
+      {
+        "nombre": "Physical and spatial execution",
+        "detalle": "Storefronts, signage and wayfinding true to the approved design. We survey the site, coordinate production and install.",
+        "items": [
+          "Storefronts and vinyl",
+          "Facade signage",
+          "Interior wayfinding",
+          "Production and installation"
+        ]
+      },
+      {
+        "nombre": "Tailored advisory",
+        "detalle": "Guidance to decide before you invest. We assess your brand, your space and your communication, and set out an action plan with clear priorities.",
+        "items": [
+          "Brand and space assessment",
+          "Prioritised action plan",
+          "Guidance on suppliers and production",
+          "Online or on-site sessions"
+        ]
+      }
+    ]
+  },
+  "mapa": {
+    "etiqueta": "Map",
+    "nota": "Every project is a point",
+    "titulo": "How far we’ve come.",
+    "texto": "We work remotely with brands in any country and travel to install when the project requires it.",
+    "sede": "Home base",
+    "proyectos": "View projects",
+    "pronto": "Case studies coming soon."
+  },
+  "contacto": {
+    "etiqueta": "Contact",
+    "nota": "First reply within one business day",
+    "titulo": "Tell us what needs building.",
+    "texto": "Fill in the form or reach us on the channel you prefer. The more detail you share, the more precise our first reply will be.",
+    "canalesTitulo": "Direct channels",
+    "redesNota": "Everywhere as {usuario}",
+    "horarioLabel": "Office hours",
+    "horario": "Monday to Friday, 9:00 to 18:00 (GMT−3)",
+    "pasosTitulo": "Next steps",
+    "pasos": [
+      "We reply with specific questions or an initial scope.",
+      "We arrange a call or a site visit to understand the space and take measurements.",
+      "We send a formal proposal with scope, timeline and fees."
+    ]
+  },
+  "formulario": {
+    "etiqueta": "Form",
+    "necesidadesLabel": "How can we help?",
+    "necesidadesAyuda": "You can choose more than one.",
+    "necesidades": [
+      "Brand identity",
+      "Commercial / spatial graphics",
+      "End-to-end creative direction",
+      "Tailored advisory",
+      "Other"
+    ],
+    "datosLabel": "Contact details",
+    "nombre": "Full name",
+    "empresa": "Brand or company",
+    "correo": "Email address",
+    "telefono": "WhatsApp or phone",
+    "opcional": "Optional",
+    "plazoLabel": "What is your timeline?",
+    "plazos": [
+      "As soon as possible",
+      "Within 1 to 3 months",
+      "No set date"
+    ],
+    "mensajeLabel": "Project details",
+    "mensajePlaceholder": "What you need, where it is, approximate dimensions and any useful references.",
+    "enviar": "Send enquiry",
+    "enviando": "Sending…",
+    "privacidad": "Your details are used only to respond to this enquiry.",
+    "errores": {
+      "necesidades": "Select at least one option.",
+      "nombre": "Please enter your name.",
+      "correo": "Check your email address: it is missing or invalid.",
+      "envio": "We couldn’t send your enquiry. Please try again or message us on WhatsApp."
+    },
+    "exito": {
+      "titulo": "Received.",
+      "texto": "We’ll reply within one business day to the email address you provided.",
+      "whatsapp": "Continue on WhatsApp",
+      "otra": "Send another enquiry"
+    },
+    "ficha": {
+      "titulo": "Enquiry sheet",
+      "servicios": "Services",
+      "marca": "Brand",
+      "contacto": "Contact",
+      "plazo": "Timing",
+      "vacio": "Not filled in",
+      "incompleto": "Details missing",
+      "listo": "Ready to send"
+    }
+  },
+  "footer": {
+    "derechos": "All rights reserved.",
+    "claim": "Designed to be built.",
+    "volver": "Back to top"
+  },
+  "idioma": {
+    "cambiar": "Español",
+    "corto": "ES"
+  },
+  "error404": {
+    "titulo": "This page doesn’t exist.",
+    "volver": "Back to home"
+  },
+  "plano": {
+    "figura": "Fig.",
+    "hoja": "Sheet",
+    "escala": "Scale",
+    "referencia": "Ref.",
+    "coordenadas": "34°36′13″S 58°22′54″W",
+    "signo": "Sign · 15 × 15 grid",
+    "celdas": "15 cells · from pixel to point",
+    "proyecto": "Project",
+    "fecha": "Date",
+    "revision": "Rev.",
+    "formato": "Format",
+    "estudio": "Creative direction and execution studio",
+    "canal": "Channel",
+    "respuesta": "Reply",
+    "respuestaValor": "1 business day"
+  },
+  "trabajos": {
+    "etiqueta": "Work",
+    "titulo": "Selected cases",
+    "proximo": "Coming soon",
+    "enPreparacion": "In preparation",
+    "pronto": "Soon"
+  },
+  "caso": {
+    "volver": "All work",
+    "cliente": "Client",
+    "lugar": "Location",
+    "alcance": "Scope",
+    "anio": "Year",
+    "siguiente": "Next case"
+  }
+}

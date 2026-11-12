@@ -1,0 +1,38 @@
+---
+/**
+ * Lámina 03 · Servicios como índice técnico: código, disciplina, alcance e incluye, alineados a 12 columnas.
+ * Al pasar el cursor, la fila activa se marca con una línea amarilla de 1 px y el resto se atenúa.
+ */
+import SectionHead from '../ui/SectionHead.astro';
+import { getTextos, pad } from '../../lib/i18n';
+import type { Lang } from '../../lib/site';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = getTextos(lang);
+const s = t.servicios;
+---
+<section id="servicios" class="scroll-mt-16 pt-32 md:pt-48" aria-labelledby="servicios-title" data-sheet="servicios">
+  <SectionHead num="03" eyebrow={s.etiqueta} nota={s.nota} title={s.titulo} id="servicios-title" size="headline" />
+  <div class="shell mt-16 md:mt-24">
+    <div class="micro grid-cmd hidden border-b border-filete pb-3 text-cemento md:grid" aria-hidden="true" data-reveal>
+      <span class="col-span-1">{s.columnas.codigo}</span>
+      <span class="col-span-5">{s.columnas.disciplina}</span>
+      <span class="col-span-3">{s.columnas.alcance}</span>
+      <span class="col-span-3">{s.columnas.incluye}</span>
+    </div>
+    <ol class="indice">
+      {s.lista.map((x, i) => (
+        <li class="indice-fila border-b border-filete">
+          <div class="grid-cmd items-baseline gap-y-5 py-9 md:py-12" data-reveal style={`--d:${i * 90}ms`}>
+            <p class="indice-cod micro lectura col-span-1 text-cemento">S·{pad(i + 1)}</p>
+            <h3 class="indice-nombre titular col-span-3 text-index md:col-span-5">{x.nombre}</h3>
+            <p class="col-span-4 max-w-[36ch] text-small text-niebla md:col-span-3">{x.detalle}</p>
+            <ul class="col-span-4 text-[0.8125rem] leading-snug text-cemento md:col-span-3">
+              {x.items.map((it) => <li class="border-b border-filete py-2 first:pt-0 last:border-0">{it}</li>)}
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

@@ -1,0 +1,26 @@
+---
+/**
+ * Pie: la firma del estudio. Un filete, el wordmark a todo el ancho (sin el isotipo) y una sola línea
+ * de cierre. El contacto vive justo arriba (Contacto); el idioma, en la cabecera. El año se actualiza solo.
+ */
+import Wordmark from '../brand/Wordmark.astro';
+import { getTextos } from '../../lib/i18n';
+import type { Lang } from '../../lib/site';
+interface Props { lang: Lang; slug?: string }
+const { lang } = Astro.props;
+const t = getTextos(lang);
+const p = t.footer;
+---
+<footer class="pb-6 md:pb-8" data-sheet="pie">
+  <div class="shell">
+    <div class="h-px bg-filete" data-reveal="filete" aria-hidden="true"></div>
+    <div class="pt-12 md:pt-20" data-reveal>
+      <Wordmark class="block h-auto w-full text-blanco" label="commandesign" />
+    </div>
+    <div class="micro mt-10 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 text-cemento md:mt-16">
+      <p>© <span data-anio>{new Date().getFullYear()}</span> commandesign · {p.derechos}</p>
+      <p class="hidden md:block">{p.claim}</p>
+      <a href="#contenido" class="enlace-in transition-colors hover:text-blanco">↑ {p.volver}</a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,182 @@
+---
+/**
+ * Lámina 04 · Contacto. Formulario a la izquierda (bloques numerados separados por filetes de 1 px,
+ * selectores rectos) y, a la derecha, la ficha de la consulta: se completa en vivo mientras escribes
+ * y su punto de estado pasa a amarillo cuando está lista para enviar. El botón amarillo vive en la ficha.
+ * Netlify Forms (form «contacto»): Netlify detecta el formulario al publicar y guarda cada envío.
+ * Con JavaScript se envía sin recargar (motion.ts › formulario); sin JavaScript va a /gracias.
+ */
+import SectionHead from '../ui/SectionHead.astro';
+import Canales from '../ui/Canales.astro';
+import { site, whatsappUrl, instagramUsuario, type Lang } from '../../lib/site';
+import { getTextos, rutas, pad } from '../../lib/i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = getTextos(lang);
+const f = t.formulario;
+const fi = f.ficha;
+const filasFicha = [
+  { id: 'servicios', k: fi.servicios },
+  { id: 'marca', k: fi.marca },
+  { id: 'contacto', k: fi.contacto },
+  { id: 'plazo', k: fi.plazo },
+];
+const legend = 'float-left grid w-full grid-cols-[2.75rem_1fr] items-baseline gap-x-2 md:grid-cols-[3.5rem_1fr_auto]';
+const num = 'micro lectura text-cemento';
+const pregunta = 'text-title font-bold tracking-[-0.02em]';
+const rotulo = 'micro block text-cemento';
+---
+<section id="contacto" class="scroll-mt-16 pt-32 pb-32 md:pt-48 md:pb-40" aria-labelledby="contacto-title" data-sheet="contacto">
+  <SectionHead num="05" eyebrow={t.contacto.etiqueta} nota={t.contacto.nota} title={t.contacto.titulo} id="contacto-title" />
+  <div class="shell mt-16 md:mt-24">
+    <form name="contacto" method="POST" action={rutas[lang].gracias} data-netlify="true" netlify-honeypot="bot-field"
+      class="grid-cmd gap-y-16" data-form novalidate data-state="idle"
+      data-msg-envio={f.errores.envio} data-whatsapp={site.whatsapp} data-lang={lang} data-vacio={fi.vacio}
+      data-incompleto={fi.incompleto} data-listo={fi.listo}>
+      <input type="hidden" name="form-name" value="contacto" />
+      <input type="hidden" name="idioma" value={lang} />
+      <input type="hidden" name="necesidades" value="" data-necesidades />
+      <p class="hidden" aria-hidden="true"><label>No completar <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+
+      <div class="col-span-4 md:col-span-7" data-reveal>
+        <p class="max-w-[44ch] text-small text-niebla md:pl-14">{t.contacto.texto}</p>
+
+        <!-- 01 · Servicios -->
+        <fieldset class="mt-12 border-t border-filete pt-6">
+          <legend class={legend}>
+            <span class={num}>01</span><span class={pregunta}>{f.necesidadesLabel}</span>
+            <span class="micro col-start-2 mt-1 text-cemento md:col-start-3 md:mt-0" id="ayuda-necesidades">{f.necesidadesAyuda}</span>
+          </legend>
+          <div class="clear-left pt-6 md:pl-14">
+            <div class="tags flex flex-wrap gap-2" data-tags aria-describedby="ayuda-necesidades err-necesidades">
+              {f.necesidades.map((n, i) => (
+                <label class="tag"><input type="checkbox" name="necesidad" value={n} class="sr-only" id={`nec-${i}`} /><span>{n}</span></label>
+              ))}
+            </div>
+            <p class="error" id="err-necesidades" hidden>{f.errores.necesidades}</p>
+          </div>
+        </fieldset>
+
+        <!-- 02 · Datos -->
+        <fieldset class="mt-14 border-t border-filete pt-6">
+          <legend class={legend}><span class={num}>02</span><span class={pregunta}>{f.datosLabel}</span></legend>
+          <div class="clear-left grid gap-x-8 gap-y-8 pt-6 sm:grid-cols-2 md:pl-14">
+            <div>
+              <label for="f-nombre" class={rotulo}>{f.nombre}</label>
+              <input id="f-nombre" name="nombre" class="campo" required autocomplete="name" aria-describedby="err-nombre" />
+              <p class="error" id="err-nombre" hidden>{f.errores.nombre}</p>
+            </div>
+            <div>
+              <label for="f-empresa" class={rotulo}>{f.empresa}<span class="ml-2 text-humo">· {f.opcional}</span></label>
+              <input id="f-empresa" name="empresa" class="campo" autocomplete="organization" />
+            </div>
+            <div>
+              <label for="f-correo" class={rotulo}>{f.correo}</label>
+              <input id="f-correo" name="correo" type="email" class="campo" required autocomplete="email" inputmode="email" aria-describedby="err-correo" />
+              <p class="error" id="err-correo" hidden>{f.errores.correo}</p>
+            </div>
+            <div>
+              <label for="f-telefono" class={rotulo}>{f.telefono}<span class="ml-2 text-humo">· {f.opcional}</span></label>
+              <input id="f-telefono" name="telefono" type="tel" class="campo" autocomplete="tel" inputmode="tel" />
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 03 · Plazo -->
+        <fieldset class="mt-14 border-t border-filete pt-6">
+          <legend class={legend}>
+            <span class={num}>03</span><span class={pregunta}>{f.plazoLabel}</span>
+            <span class="micro col-start-2 mt-1 text-cemento md:col-start-3 md:mt-0">{f.opcional}</span>
+          </legend>
+          <div class="clear-left flex flex-wrap gap-2 pt-6 md:pl-14">
+            {f.plazos.map((p, i) => (
+              <label class="tag"><input type="radio" name="plazo" value={p} class="sr-only" id={`plazo-${i}`} /><span>{p}</span></label>
+            ))}
+          </div>
+        </fieldset>
+
+        <!-- 04 · Mensaje -->
+        <div class="mt-14 border-t border-filete pt-6">
+          <div class={legend.replace('float-left ', '')}>
+            <span class={num} aria-hidden="true">04</span>
+            <label for="f-mensaje" class={pregunta}>{f.mensajeLabel}</label>
+            <span class="micro col-start-2 mt-1 text-cemento md:col-start-3 md:mt-0">{f.opcional}</span>
+          </div>
+          <div class="pt-4 md:pl-14">
+            <textarea id="f-mensaje" name="mensaje" class="campo" rows="4" placeholder={f.mensajePlaceholder}></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ficha de la consulta -->
+      <aside class="col-span-4 md:col-span-4 md:col-start-9" data-reveal style="--d:150ms">
+        <div class="md:sticky md:top-24">
+          <div>
+            <p class="micro pb-3.5 text-cemento">{fi.titulo}</p>
+            <dl>
+              {filasFicha.map((r) => (
+                <div class="grid grid-cols-[6.5rem_1fr] items-baseline gap-3 border-t border-filete py-3.5">
+                  <dt class="micro text-cemento">{r.k}</dt>
+                  <dd class="ficha-valor text-sm break-words" data-ficha={r.id} data-vacio>{fi.vacio}</dd>
+                </div>
+              ))}
+            </dl>
+            <p class="ficha-estado micro flex items-center gap-3 border-y border-filete py-3.5 text-blanco" data-ficha-estado role="status" aria-live="polite">
+              <span class="estado" aria-hidden="true"></span><span data-ficha-estado-texto>{fi.incompleto}</span>
+            </p>
+            <div class="pt-5">
+              <button type="submit" data-label-idle={f.enviar} data-label-sending={f.enviando} class="btn w-full">
+                <span data-btn-label>{f.enviar}</span>
+                <span class="flex items-center" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" class="flecha size-4" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 8h11M9 3.5L13.5 8 9 12.5"/></svg>
+                  <span class="cargando">{[0, 1, 2].map((i) => <i style={`--i:${i}`}></i>)}</span>
+                </span>
+              </button>
+              <p class="mt-4 text-[0.8125rem] leading-snug text-cemento">{f.privacidad}</p>
+            </div>
+          </div>
+          <p class="error" data-form-error role="alert" hidden></p>
+        </div>
+      </aside>
+    </form>
+
+    <!-- Envío correcto -->
+    <div data-form-success hidden tabindex="-1" class="grid-cmd gap-y-8 border-t border-filete pt-8 outline-none">
+      <p class="micro col-span-4 flex items-center gap-3 text-cemento md:col-span-12"><span class="estado" aria-hidden="true"></span>{fi.listo}</p>
+      <p class="titular col-span-4 text-display md:col-span-8">{f.exito.titulo}</p>
+      <p class="col-span-4 max-w-[40ch] text-small text-niebla md:col-span-4 md:col-start-9 md:self-end">{f.exito.texto}</p>
+      <div class="col-span-4 flex flex-wrap items-center gap-x-7 gap-y-4 md:col-span-12">
+        <a data-success-whatsapp href={whatsappUrl(lang)} target="_blank" rel="noopener" class="btn">
+          <span>{f.exito.whatsapp}</span>
+          <svg viewBox="0 0 16 16" class="flecha size-4" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>
+        </a>
+        <button type="button" data-form-reset class="enlace text-sm text-niebla transition-colors hover:text-blanco">{f.exito.otra}</button>
+      </div>
+    </div>
+
+    <!-- Próximos pasos · canales directos (íconos: un clic lleva a cada canal) -->
+    <div class="grid-cmd mt-24 gap-y-14 md:mt-32">
+      <div class="col-span-4 md:col-span-7" data-reveal>
+        <p class="micro text-cemento md:pl-14">{t.contacto.pasosTitulo}</p>
+        <ol class="mt-5 border-t border-filete">
+          {t.contacto.pasos.map((p, i) => (
+            <li class="grid grid-cols-[2.75rem_1fr] items-baseline gap-x-2 border-b border-filete py-4 md:grid-cols-[3.5rem_1fr]">
+              <span class={num}>{pad(i + 1)}</span><span class="text-small text-niebla">{p}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div class="col-span-4 md:col-span-4 md:col-start-9" data-reveal style="--d:120ms">
+        <p class="micro text-cemento">{t.contacto.canalesTitulo}</p>
+        <div class="mt-5 border-t border-filete py-4">
+          <Canales lang={lang} class="-ml-3" />
+          <p class="mt-2 text-small text-niebla">{t.contacto.redesNota.replace('{usuario}', instagramUsuario())}</p>
+        </div>
+        <div class="border-y border-filete py-4">
+          <p class="micro text-cemento">{t.contacto.horarioLabel}</p>
+          <p class="mt-2 text-small text-niebla">{t.contacto.horario}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

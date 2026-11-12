@@ -1,0 +1,11 @@
+---
+import CasePage from '../../components/case/CasePage.astro';
+import { getCasos, esPublicado, slugDe, MOSTRAR_TRABAJOS } from '../../lib/casos';
+export async function getStaticPaths() {
+  if (!MOSTRAR_TRABAJOS) return [];
+  const casos = (await getCasos('es')).filter(esPublicado);
+  return casos.map((caso) => ({ params: { slug: slugDe(caso) }, props: { caso } }));
+}
+const { caso } = Astro.props;
+---
+<CasePage lang="es" caso={caso} />

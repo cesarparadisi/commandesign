@@ -1,0 +1,16 @@
+---
+/**
+ * Titular por palabras. Cada palabra sube desde su máscara.
+ * mode «load»: al cargar (portada). mode «scroll»: al entrar en pantalla.
+ * El texto completo queda en aria-label; las palabras son decorativas para lectores de pantalla.
+ */
+interface Props { text: string; as?: 'h1' | 'h2' | 'h3' | 'p'; class?: string; id?: string; mode?: 'load' | 'scroll'; delay?: number; punto?: boolean }
+const { text, as: Tag = 'h2', class: cls = '', id, mode = 'scroll', delay } = Astro.props;
+const palabras = text.trim().split(/\s+/);
+const style = delay !== undefined ? `--d:${delay}ms` : undefined;
+---
+<Tag id={id} aria-label={text.trim()} class:list={[cls, mode === 'load' && 't-load']} data-reveal={mode === 'scroll' ? 'titular' : undefined} style={style}>
+  {palabras.map((p, i) => (
+    <Fragment><span class="t-mask" aria-hidden="true"><span class="t-word" style={`--i:${i}`}>{p}</span></span>{i < palabras.length - 1 ? ' ' : ''}</Fragment>
+  ))}
+</Tag>

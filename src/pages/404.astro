@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import SplitTitle from '../components/ui/SplitTitle.astro';
+import { getTextos } from '../lib/i18n';
+const t = getTextos('es');
+---
+<Base lang="es" title="404 · commandesign" noindex>
+  <section class="shell flex min-h-[calc(100svh-4rem)] flex-col justify-between gap-16 pt-6 pb-16" data-sheet="inicio">
+    <div>
+      <p class="micro entra flex items-baseline gap-5 text-cemento"><span class="lectura text-blanco">404</span><span>commandesign</span></p>
+      <div class="traza mt-4 h-px bg-filete" aria-hidden="true"></div>
+    </div>
+    <div class="grid-cmd gap-y-10">
+      <SplitTitle as="h1" mode="load" text={t.error404.titulo} class="titular col-span-4 text-mega md:col-span-10" />
+      <a href="/" class="entra enlace col-span-4 justify-self-start text-small text-niebla transition-colors hover:text-blanco" style="--d:500ms">{t.error404.volver}</a>
+    </div>
+  </section>
+</Base>

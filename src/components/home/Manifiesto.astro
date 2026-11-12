@@ -1,0 +1,56 @@
+---
+/**
+ * Lámina 02 · Manifiesto. El claim de la marca como titular masivo y el texto sobre el oficio,
+ * compuesto a gran tamaño: cada palabra se enciende a medida que se lee.
+ * Después, el recorrido pantalla → taller → calle, contado con la idea de la marca: una trama de celdas
+ * que pasa del píxel (pantalla) al punto (calle) a medida que avanzas con el scroll. El frente del cambio
+ * se marca en amarillo y cada etapa se enciende cuando el frente llega a su columna.
+ */
+import SectionHead from '../ui/SectionHead.astro';
+import { getTextos, pad } from '../../lib/i18n';
+import type { Lang } from '../../lib/site';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = getTextos(lang);
+const m = t.manifiesto;
+const palabras = m.texto.trim().split(/\s+/);
+// Trama: 4 filas × 48 columnas (24 en el teléfono). --x es la posición del 0 al 1, con un leve desfase por fila
+const COLS = 48;
+const FILAS = 4;
+const trama = Array.from({ length: FILAS * COLS }, (_, i) => {
+  const c = i % COLS;
+  const f = Math.floor(i / COLS);
+  return { x: ((c / (COLS - 1)) * 0.95 + f * 0.0125).toFixed(4), impar: c % 2 === 1 };
+});
+---
+<section id="manifiesto" class="scroll-mt-16 pt-32 md:pt-48" aria-labelledby="manifiesto-title" data-sheet="manifiesto">
+  <SectionHead num="02" eyebrow={m.etiqueta} nota={m.nota} title={m.titulo} id="manifiesto-title" />
+  <div class="shell">
+    <div class="grid-cmd mt-16 md:mt-28">
+      <p class="col-span-4 text-statement font-medium md:col-span-9 md:col-start-4" data-lectura>
+        {palabras.map((w, i) => (
+          <Fragment><span class="w" style={`--w:${(i / palabras.length).toFixed(3)}`}>{w}</span>{i < palabras.length - 1 ? ' ' : ''}</Fragment>
+        ))}
+      </p>
+    </div>
+
+    <!-- Recorrido -->
+    <div class="mt-28 md:mt-44" data-recorrido>
+      <p class="micro mb-5 text-cemento" data-reveal>{t.hero.subtitulo.replace(/\.$/, '')}</p>
+      <div class="trama" aria-hidden="true">
+        {trama.map((c) => <span class:list={['tc', c.impar && 'tc-impar']} style={`--x:${c.x}`}></span>)}
+      </div>
+      <ol class="grid-cmd mt-10 gap-y-12 md:mt-12">
+        {m.etapas.map((e, i) => (
+          <li class="etapa col-span-4" data-etapa={i}>
+            <p class="micro lectura text-cemento">{pad(i + 1)}</p>
+            <h3 class="titular mt-5 text-[clamp(2rem,3vw,3rem)] leading-[0.98] tracking-[-0.035em]">{e.titulo}</h3>
+            <p class="mt-5 max-w-[34ch] text-small text-niebla">{e.texto}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <p class="mt-28 max-w-[22ch] text-statement font-medium text-humo md:mt-40 md:ml-[25%]" data-reveal>{m.causa}</p>
+  </div>
+</section>

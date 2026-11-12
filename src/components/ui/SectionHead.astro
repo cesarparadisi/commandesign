@@ -1,0 +1,20 @@
+---
+/**
+ * Encabezado de lámina: filete de 1 px que se traza, número y nombre de la lámina a la izquierda,
+ * nota técnica a la derecha (micro-rótulos), y debajo el titular masivo condensado.
+ */
+import SplitTitle from './SplitTitle.astro';
+interface Props { num?: string; eyebrow: string; nota?: string; title?: string; id?: string; size?: 'display' | 'headline'; class?: string }
+const { num, eyebrow, nota, title, id, size = 'display', class: cls = '' } = Astro.props;
+---
+<header class:list={['shell', cls]}>
+  <div class="h-px bg-filete" data-reveal="filete" aria-hidden="true"></div>
+  <div class="micro mt-4 flex items-baseline justify-between gap-6 text-cemento" data-reveal style="--d:120ms">
+    <p class="flex items-baseline gap-5">{num && <span class="lectura text-blanco">{num}</span>}<span>{eyebrow}</span></p>
+    {nota && <p class="hidden text-right sm:block">{nota}</p>}
+  </div>
+  {title && (
+    <SplitTitle id={id} as="h2" text={title} delay={150}
+      class:list={['titular mt-14 md:mt-24', size === 'display' ? 'text-display max-w-[14ch]' : 'text-headline max-w-[18ch]']} />
+  )}
+</header>

@@ -1,0 +1,11 @@
+---
+/** Logo completo: signo del píxel al punto + wordmark. Siempre acromático (toma el color del texto). */
+import PixelSign from './PixelSign.astro';
+import Wordmark from '../brand/Wordmark.astro';
+interface Props { class?: string; signClass?: string; wordClass?: string; mode?: 'mini' | 'static' }
+const { class: cls = '', signClass = 'size-7', wordClass = 'h-[14px] w-auto', mode = 'mini' } = Astro.props;
+---
+<span class:list={['inline-flex items-center gap-3', cls]}>
+  <PixelSign mode={mode} class={signClass} />
+  <Wordmark class={wordClass} label="commandesign" />
+</span>

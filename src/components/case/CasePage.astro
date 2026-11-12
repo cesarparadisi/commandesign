@@ -1,0 +1,88 @@
+---
+/** Página de caso. Todo sale del .md del caso; no hace falta tocar este archivo. */
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SplitTitle from '../ui/SplitTitle.astro';
+import WhatsAppButton from '../ui/WhatsAppButton.astro';
+import Cross from '../ui/Cross.astro';
+import { getCasos, esPublicado, slugDe, type Caso } from '../../lib/casos';
+import { getTextos, rutaCaso, ancla, pad } from '../../lib/i18n';
+import type { Lang } from '../../lib/site';
+interface Props { lang: Lang; caso: Caso }
+const { lang, caso } = Astro.props;
+const t = getTextos(lang);
+const d = caso.data;
+const slug = slugDe(caso);
+const { Content } = await render(caso);
+const publicados = (await getCasos(lang)).filter(esPublicado);
+const pos = publicados.findIndex((c) => c.id === caso.id) + 1;
+const ref = `CMD—${pad(d.order)}`;
+const next = publicados.length > 1 ? publicados[(publicados.findIndex((c) => c.id === caso.id) + 1) % publicados.length] : null;
+const meta = [
+  d.client && { k: t.caso.cliente, v: d.client },
+  d.place && { k: t.caso.lugar, v: d.place },
+  d.year && { k: t.caso.anio, v: String(d.year) },
+].filter(Boolean) as { k: string; v: string }[];
+---
+<Base lang={lang} slug={slug} title={`${d.title} · commandesign`} description={d.summary || undefined} image={d.cover?.src}>
+  <article>
+    <header class="shell pt-8 pb-12 md:pt-10 md:pb-16" data-hud={`${ref} — ${d.title}`}>
+      <div class="tech grid-cmd gap-y-1 text-cemento">
+        <a href={ancla(lang, 'trabajos')} class="intro col-span-2 transition-colors hover:text-blanco md:col-span-3" style="--i:0">← {t.caso.volver}</a>
+        <p class="intro col-span-2 text-right md:col-span-3 md:text-left" style="--i:1"><span class="text-blanco">{ref}</span> · {pad(pos)}/{pad(publicados.length)}</p>
+        <p class="intro hidden md:col-span-3 md:block" style="--i:2">{d.place}</p>
+        <p class="intro hidden text-right md:col-span-3 md:block" style="--i:3">{t.plano.escala} 1:1</p>
+      </div>
+      <SplitTitle text={d.title} class="display-tight mt-16 text-display max-w-[14ch] md:mt-24" />
+      <div class="grid-cmd mt-12 gap-y-8 md:mt-16">
+        {d.summary && <p class="intro col-span-4 max-w-[52ch] text-lg text-cemento md:col-span-6" style="--i:4">{d.summary}</p>}
+        <dl class="intro tech relative col-span-4 border-t border-linea md:col-span-5 md:col-start-8" style="--i:5">
+          <Cross class="-top-[5px] -left-[4.5px]" /><Cross class="-top-[5px] -right-[4.5px]" />
+          {meta.map((m) => <div class="grid grid-cols-[7rem_1fr] gap-4 border-b border-linea py-3"><dt class="text-acero">{m.k}</dt><dd class="text-blanco">{m.v}</dd></div>)}
+          {d.scope.length > 0 && <div class="grid grid-cols-[7rem_1fr] gap-4 border-b border-linea py-3"><dt class="text-acero">{t.caso.alcance}</dt><dd class="text-blanco">{d.scope.join(' · ')}</dd></div>}
+        </dl>
+      </div>
+    </header>
+
+    {d.cover && (
+      <div class="shell">
+        <div class="tech mb-3 flex items-center gap-3 text-cemento" aria-hidden="true">
+          <span class="h-2.5 w-px bg-acero"></span><span class="text-blanco">{t.plano.figura} 01</span>
+          <span class="h-px flex-1 bg-acero/60"></span><span>{ref}</span><span class="h-2.5 w-px bg-acero"></span>
+        </div>
+        <div class="relative">
+          <Cross class="-top-[4.5px] -left-[4.5px] z-10" /><Cross class="-top-[4.5px] -right-[4.5px] z-10" />
+          <Cross class="-bottom-[4.5px] -left-[4.5px] z-10" /><Cross class="-bottom-[4.5px] -right-[4.5px] z-10" />
+          <div class="overflow-hidden bg-carbon outline outline-1 outline-linea" transition:name={`portada-${slug}`} style="view-transition-class: portada">
+            <Image src={d.cover} alt={d.coverAlt || d.title} widths={[960, 1440, 2000]} sizes="100vw" loading="eager" class="aspect-[3/2] w-full object-cover" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    <div class="shell grid-cmd py-16 md:py-24">
+      <div class="prosa col-span-4 max-w-[64ch] text-lg leading-relaxed md:col-span-7 md:col-start-4" data-reveal><Content /></div>
+    </div>
+
+    {d.gallery.length > 0 && (
+      <div class="shell grid gap-6 pb-16">
+        {d.gallery.map((g) => (
+          <div class="overflow-hidden rounded-[2px] bg-carbon" data-reveal="media">
+            <Image src={g.src} alt={g.alt} widths={[960, 1440, 2000]} sizes="100vw" class="w-full" />
+          </div>
+        ))}
+      </div>
+    )}
+
+    {next && (
+      <nav class="border-t border-linea" aria-label={t.caso.siguiente} data-hud={t.caso.siguiente}>
+        <a href={rutaCaso(lang, slugDe(next))} class="case-card shell group flex items-end justify-between gap-6 py-14" data-astro-prefetch="viewport">
+          <span><span class="tech block text-cemento">{t.caso.siguiente} — CMD—{pad(next.data.order)}</span><span class="display-tight mt-3 block text-headline">{next.data.title}</span></span>
+          <svg viewBox="0 0 16 16" class="case-arrow size-8 shrink-0" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </nav>
+    )}
+    <div class="shell pb-20"><WhatsAppButton lang={lang} /></div>
+  </article>
+</Base>
